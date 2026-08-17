@@ -1,13 +1,18 @@
+"use client";
+
+import { useState } from "react";
 import { classNames } from "@/lib/utils";
 
 /**
  * Quantum Space X brand logo.
  *
- * NOTE: This is a clean vector placeholder so the site is fully branded out of
- * the box. To use your real logo image, drop it at
- *   apps/web/public/logo.png
- * and replace this component's <svg> with <img src="/logo.png" ... />.
+ * AUTO-SWAP: this component automatically renders your real logo from
+ * `/logo.png` (apps/web/public/logo.png) if it exists, and falls back to the
+ * vector mark below if it doesn't. So to use your brand logo, simply drop the
+ * file at  apps/web/public/logo.png  — no code change required.
  */
+
+// Vector fallback mark (shown until /logo.png is present)
 export function LogoMark({ className }: { className?: string }) {
   return (
     <svg
@@ -24,7 +29,6 @@ export function LogoMark({ className }: { className?: string }) {
         </linearGradient>
       </defs>
       <circle cx="24" cy="24" r="6.2" fill="url(#qx-g)" />
-      <circle cx="24" cy="24" r="6.2" stroke="url(#qx-g)" strokeOpacity="0.5" />
       <ellipse
         cx="24"
         cy="24"
@@ -50,10 +54,25 @@ export function LogoMark({ className }: { className?: string }) {
   );
 }
 
+// Tries /logo.png; falls back to the vector mark on error.
+function AutoMark({ className }: { className?: string }) {
+  const [failed, setFailed] = useState(false);
+  if (failed) return <LogoMark className={className} />;
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src="/logo.png"
+      alt="Quantum Space X logo"
+      onError={() => setFailed(true)}
+      className={classNames("h-9 w-auto object-contain", className)}
+    />
+  );
+}
+
 export function Logo({ className, light = true }: { className?: string; light?: boolean }) {
   return (
     <span className={classNames("inline-flex items-center gap-2.5", className)}>
-      <LogoMark />
+      <AutoMark />
       <span className="flex flex-col leading-none">
         <span
           className={classNames(
