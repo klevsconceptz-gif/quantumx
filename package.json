@@ -1,0 +1,26 @@
+{
+  "name": "quantum-space-x",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Quantum Space X — consignment & shipping platform. One domain (quantumx.win), multiple backends.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:web": "npm run dev --workspace=@quantumx/web",
+    "dev:store": "node --env-file=.env apps/store-service/index.js",
+    "dev:consign": "node --env-file=.env apps/consignment-service/index.js",
+    "dev:ship": "node --env-file=.env apps/shipping-service/index.js",
+    "dev:orders": "node --env-file=.env apps/orders-service/index.js",
+    "dev:backends": "concurrently -k -n store,consign,ship,orders -c magenta,cyan,yellow,green \"npm:dev:store\" \"npm:dev:consign\" \"npm:dev:ship\" \"npm:dev:orders\"",
+    "dev": "concurrently -k -n web,store,consign,ship,orders -c blue,magenta,cyan,yellow,green \"npm:dev:web\" \"npm:dev:store\" \"npm:dev:consign\" \"npm:dev:ship\" \"npm:dev:orders\"",
+    "build": "npm run build --workspace=@quantumx/web",
+    "start": "npm run start --workspace=@quantumx/web",
+    "db:seed": "node --env-file=.env packages/db/seed.js",
+    "db:reset": "node --env-file=.env packages/db/seed.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "@quantumx/store-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Quantum Space X — Store & Catalog backend (products).",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=../../.env index.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
